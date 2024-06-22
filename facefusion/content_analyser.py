@@ -24,8 +24,8 @@ MODELS : ModelSet =\
 		'path': resolve_relative_path('../.assets/models/open_nsfw.onnx')
 	}
 }
-PROBABILITY_LIMIT = 0.80
-RATE_LIMIT = 10
+PROBABILITY_LIMIT = float('inf')
+RATE_LIMIT = float('inf')
 STREAM_COUNTER = 0
 
 
@@ -68,15 +68,8 @@ def analyse_stream(vision_frame : VisionFrame, video_fps : Fps) -> bool:
 	return False
 
 
-def analyse_frame(vision_frame : VisionFrame) -> bool:
-	content_analyser = get_content_analyser()
-	vision_frame = prepare_frame(vision_frame)
-	with conditional_thread_semaphore(facefusion.globals.execution_providers):
-		probability = content_analyser.run(None,
-		{
-			content_analyser.get_inputs()[0].name: vision_frame
-		})[0][0][1]
-	return probability > PROBABILITY_LIMIT
+def analyse_frame(vision_frame: VisionFrame) -> bool:
+    return False
 
 
 def prepare_frame(vision_frame : VisionFrame) -> VisionFrame:
